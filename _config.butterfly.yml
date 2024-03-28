@@ -3,7 +3,7 @@
 # --------------------------------------
 
 nav:
-  logo: http://img.dcwedu.top/i/2023/08/14/64d9ed0eafb95.jpg # image
+  logo: https://img.dcwedu.top/i/2023/08/14/64d9ed0eafb95.jpg # image
   display_title: true
   fixed: true # fixed navigation bar
 
@@ -41,21 +41,21 @@ social:
 # --------------------------------------
 
 # Favicon（網站圖標）
-favicon: http://img.dcwedu.top/i/2023/08/14/64d9ed0eafb95.jpg
+favicon: https://img.dcwedu.top/i/2023/08/14/64d9ed0eafb95.jpg
 
 # Avatar (頭像)
 avatar:
-  img: http://img.dcwedu.top/i/2023/08/14/64d9ed0eafb95.jpg
+  img: https://img.dcwedu.top/i/2023/08/14/64d9ed0eafb95.jpg
   effect: false
 
 # Disable all banner image
 disable_top_img: false
 
 # The banner image of home page
-index_img: http://img.dcwedu.top/i/2023/08/25/64e851c1431c4.jpg
+index_img: https://img.dcwedu.top/i/2023/08/25/64e851c1431c4.jpg
 
 # If the banner of page not setting, it will show the top_img
-default_top_img: http://img.dcwedu.top/i/2023/08/25/64e851c1431c4.jpg
+default_top_img: https://img.dcwedu.top/i/2023/08/25/64e851c1431c4.jpg
 
 # The banner image of archive page
 archive_img:
@@ -92,14 +92,14 @@ cover:
 
 # Replace Broken Images (替換無法顯示的圖片)
 error_img:
-  flink: http://img.dcwedu.top/i/2024/01/24/65b0d473532a0.png
-  post_page: http://img.dcwedu.top/i/2024/01/24/65b0d473532a0.png
+  flink: https://img.dcwedu.top/i/2024/01/24/65b0d473532a0.png
+  post_page: https://img.dcwedu.top/i/2024/01/24/65b0d473532a0.png
 
 # A simple 404 page
 error_404:
   enable: false
   subtitle: '页面走丢了'
-  background: http://img.dcwedu.top/i/2024/01/24/65b0d473532a0.png
+  background: https://img.dcwedu.top/i/2024/01/24/65b0d473532a0.png
 
 post_meta:
   page: # Home Page
