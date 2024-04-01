@@ -17,7 +17,8 @@ pnpm i qiniu
 # 新建qiniu模块
 
 > 别在意angular的图标
-> ![文件结构示意图](https://img.dcwedu.top/i/2024/03/28/66051f6823511.png)
+
+![文件结构示意图](https://img.dcwedu.top/i/2024/04/01/660a610f9f8cb.png)
 
 ## qiniu.service.ts
 
@@ -228,5 +229,6 @@ export class AppModule implements NestModule {
 
 # ApiFox中的测试结果
 
-![文件上传](https://img.dcwedu.top/i/2024/03/28/66052376a4493.png)
-![预览/下载](https://img.dcwedu.top/i/2024/03/28/660523ebbe853.png)
+![文件上传](https://img.dcwedu.top/i/2024/04/01/660a61913e600.png)
+
+![预览/下载](https://img.dcwedu.top/i/2024/04/01/660a61b93a3db.png)
