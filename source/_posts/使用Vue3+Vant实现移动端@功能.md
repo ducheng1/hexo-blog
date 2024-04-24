@@ -1,10 +1,24 @@
+---
+title: 使用Vue3+Vant实现移动端@功能
+author: DuCheng
+top: false
+tags:
+  - vue
+  - vant
+categories:
+  - 前端
+date: 2024-04-24 09:40:00
+cover:
+password:
+---
+
 # 基础DOM结构
 
 为了方便进行DOM操作，实际上是使用原生的可编辑元素`contenteditable`实现一个简单的富文本框。
 
 ```vue
 <script setup lang="ts">
-  const inputRef = shallowRef<HTMLDivElement>();
+const inputRef = shallowRef<HTMLDivElement>();
 </script>
 
 <template>
@@ -12,28 +26,27 @@
 </template>
 
 <style lang="scss" scoped>
-  .mention-input {
-    background-color: #f6f7fb;
-    width: 100%;
-    padding: 18px 24px;
-    max-height: 172px;
-    border-radius: 8px;
-    overflow-x: hidden;
-    font-size: 28px;
-    line-height: 36px;
+.mention-input {
+  background-color: #f6f7fb;
+  width: 100%;
+  padding: 18px 24px;
+  max-height: 172px;
+  border-radius: 8px;
+  overflow-x: hidden;
+  font-size: 28px;
+  line-height: 36px;
 
-    &:focus-visible {
-      outline: none;
-    }
-
-    // 这里使用:empty选择器代替placeholder
-    &:empty::before {
-      content: '请输入评论';
-      color: #b1b2b6;
-    }
+  &:focus-visible {
+    outline: none;
   }
-</style>
 
+  // 这里使用:empty选择器代替placeholder
+  &:empty::before {
+    content: "请输入评论";
+    color: #b1b2b6;
+  }
+}
+</style>
 ```
 
 以上就得到了一个简单的可编辑元素。
@@ -48,7 +61,12 @@
 
 ```vue
 <template>
-  <div contenteditable class="mention-input" ref="inputRef" @keyup="onKeyup"></div>
+  <div
+    contenteditable
+    class="mention-input"
+    ref="inputRef"
+    @keyup="onKeyup"
+  ></div>
 </template>
 ```
 
@@ -58,7 +76,7 @@
 // 光标位置
 const cursorIndex = ref<number>();
 // @对应的TextNode
-const textNode = ref<Selection['focusNode']>();
+const textNode = ref<Selection["focusNode"]>();
 ```
 
 ## 获取光标位置和TextNode
@@ -93,9 +111,10 @@ function isAt() {
   setTextNode();
   setCursorIndex();
   // 判断是否获取到了@对应的TextNode
-  if (!textNode.value || textNode.value?.nodeType !== Node.TEXT_NODE) return false;
+  if (!textNode.value || textNode.value?.nodeType !== Node.TEXT_NODE)
+    return false;
   // 获取元素中的文本内容
-  const content = textNode.value.textContent ?? '';
+  const content = textNode.value.textContent ?? "";
   // 获取文本内容中的@（正则结束断言）
   const match = /@$/.exec(content.slice(0, cursorIndex.value));
   // 是否匹配到@并且只有一个@字符
@@ -109,27 +128,37 @@ function isAt() {
 
 ```vue
 <script setup lang="ts">
-  import { useToggle } from '@vueuse/core';
+import { useToggle } from "@vueuse/core";
 
-  // 是否显示选择用户弹窗
-  const [showSelectUser, setShowSelectUser] = useToggle();
+// 是否显示选择用户弹窗
+const [showSelectUser, setShowSelectUser] = useToggle();
 
-  function onKeyup(e: KeyboardEvent) {
-    // 判断是否在用键盘移动光标
-    if (e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
-      return;
-    }
-    // 判断是否键入@
-    if (!isAt() || e.code === 'Backspace' || e.code === 'Delete') {
-      return;
-    }
-    // 显示选择用户弹窗
-    setShowSelectUser(true);
+function onKeyup(e: KeyboardEvent) {
+  // 判断是否在用键盘移动光标
+  if (
+    e.code === "ArrowUp" ||
+    e.code === "ArrowDown" ||
+    e.code === "ArrowLeft" ||
+    e.code === "ArrowRight"
+  ) {
+    return;
   }
+  // 判断是否键入@
+  if (!isAt() || e.code === "Backspace" || e.code === "Delete") {
+    return;
+  }
+  // 显示选择用户弹窗
+  setShowSelectUser(true);
+}
 </script>
 
 <template>
-  <div contenteditable class="mention-input" ref="inputRef" @keyup="onKeyup"></div>
+  <div
+    contenteditable
+    class="mention-input"
+    ref="inputRef"
+    @keyup="onKeyup"
+  ></div>
   <UserSelect v-model:show="showSelectUser" @confirm="handleUserSelect" />
 </template>
 ```
@@ -144,20 +173,20 @@ function handleUserSelect(userList: any[]) {
   if (!userList.length || !textNode.value) return;
   // 代码聚焦可编辑div
   inputRef.value?.focus();
-  
-	// 获取下标位置和TextNode
+
+  // 获取下标位置和TextNode
   setCursorIndex();
   setTextNode();
-  
-	// 获取@内容
-  const content = textNode.value!.textContent ?? '';
-  
+
+  // 获取@内容
+  const content = textNode.value!.textContent ?? "";
+
   // 获取父节点（可编辑div）和相邻节点
   const parentNode = textNode.value.parentNode;
   const nextNode = textNode.value.nextSibling;
 
   // 使用@分割文本并替换掉@
-  const preSlice = content.slice(0, cursorIndex.value).replace(/@$/, '');
+  const preSlice = content.slice(0, cursorIndex.value).replace(/@$/, "");
   const restSlice = content.slice(cursorIndex.value);
 
   // 使用上面分割出来的文本创建Text节点
@@ -208,30 +237,30 @@ function handleUserSelect(userList: any[]) {
 ```typescript
 function createMentionElement(user: any) {
   // 创建mention-node元素
-  const el = document.createElement('span');
-  el.style.display = 'inline-block';
+  const el = document.createElement("span");
+  el.style.display = "inline-block";
   // 给元素添加data-属性，后端需要什么就挂什么，这里只需要id
-  el.dataset.userId = user ? user.id : '';
+  el.dataset.userId = user ? user.id : "";
   // 类名，注意需要是不会重复的，后续需要获取元素伪数组
-  el.className = 'mention-node';
+  el.className = "mention-node";
   // 元素内容
-  el.textContent = user ? user.username : '';
-  
+  el.textContent = user ? user.username : "";
+
   // 使用\u200b零宽字符占位，用于后续替换为约定格式
   // 创建前置占位符
-  const spaceEl = document.createElement('span');
-  spaceEl.style.whiteSpace = 'pre';
-  spaceEl.textContent = '@\u200b';
-  
+  const spaceEl = document.createElement("span");
+  spaceEl.style.whiteSpace = "pre";
+  spaceEl.textContent = "@\u200b";
+
   // 创建后置占位符
-  const spaceElAfter = document.createElement('span');
-  spaceElAfter.style.whiteSpace = 'pre';
-  spaceElAfter.textContent = '\u200b ';
+  const spaceElAfter = document.createElement("span");
+  spaceElAfter.style.whiteSpace = "pre";
+  spaceElAfter.textContent = "\u200b ";
   // 可选，克隆节点
   // const spaceElAfter = document.cloneNode(spaceEl)
-  
+
   // 创建父元素进行包裹
-  const wrapper = document.createElement('span');
+  const wrapper = document.createElement("span");
   wrapper.appendChild(spaceEl);
   wrapper.appendChild(el);
   wrapper.appendChild(spaceElAfter);
@@ -248,22 +277,22 @@ function createMentionElement(user: any) {
 ```typescript
 function getContent() {
   // 获取可编辑div中的内容
-  const content = inputRef.value?.textContent ?? '';
+  const content = inputRef.value?.textContent ?? "";
   const userIdList: string[] = [];
   // 获取所有mention元素中的数据，这里只需要id
-  document.querySelectorAll('.mention-node').forEach((item) => {
-    userIdList.push(item.getAttribute('data-user-id') ?? '');
+  document.querySelectorAll(".mention-node").forEach((item) => {
+    userIdList.push(item.getAttribute("data-user-id") ?? "");
   });
   return {
     // 我跟后端约定的格式为@#username# ，这里将\u200b零宽字符替换为#就是我们所约定的格式
-    content: content.replaceAll('\u200b', '#'),
+    content: content.replaceAll("\u200b", "#"),
     userIdList: userIdList.filter(Boolean),
   };
 }
 
 // 清空可编辑div内容
 function clear() {
-  inputRef.value!.textContent = '';
+  inputRef.value!.textContent = "";
 }
 
 defineExpose({
@@ -277,7 +306,7 @@ defineExpose({
 ## main.ts
 
 ```typescript
-import VueDompurifyHtml from 'vue-dompurify-html';
+import VueDompurifyHtml from "vue-dompurify-html";
 
 const app = createApp(App);
 
@@ -289,27 +318,25 @@ app.use(VueDompurifyHtml);
 
 ```vue
 <script setup lang="ts">
-  // 替换@为特殊样式
-  function handleContent(content: string) {
-    return content.replaceAll(/@#.+#/g, (item) => {
-      return `<span class="mention">${item.replaceAll('#', '')} </span>`;
-    });
-  }
+// 替换@为特殊样式
+function handleContent(content: string) {
+  return content.replaceAll(/@#.+#/g, (item) => {
+    return `<span class="mention">${item.replaceAll("#", "")} </span>`;
+  });
+}
 </script>
 
 <template>
-	<div class="content" v-dompurify-html="handleContent(content)"></div>
+  <div class="content" v-dompurify-html="handleContent(content)"></div>
 </template>
 
 <style lang="scss" scoped>
-  ...
-  :deep(.mention) {
-    color: var(--van-primary-color);
-  }
-  ...
+...
+:deep(.mention) {
+  color: var(--van-primary-color);
+}
+...
 </style>
 ```
-
-
 
 ![image-20240424093544378](https://img.dcwedu.top/i/2024/04/24/662861efa9f18.png)
