@@ -108,8 +108,6 @@ function setTextNode() {
 ```typescript
 // 是否键入@
 function isAt() {
-  setTextNode();
-  setCursorIndex();
   // 判断是否获取到了@对应的TextNode
   if (!textNode.value || textNode.value?.nodeType !== Node.TEXT_NODE)
     return false;
@@ -134,6 +132,8 @@ import { useToggle } from "@vueuse/core";
 const [showSelectUser, setShowSelectUser] = useToggle();
 
 function onKeyup(e: KeyboardEvent) {
+  setTextNode();
+  setCursorIndex();
   // 判断是否在用键盘移动光标
   if (
     e.code === "ArrowUp" ||
@@ -170,13 +170,10 @@ function onKeyup(e: KeyboardEvent) {
 ```typescript
 // 选中用户后替换@
 function handleUserSelect(userList: any[]) {
-  if (!userList.length || !textNode.value) return;
   // 代码聚焦可编辑div
   inputRef.value?.focus();
 
-  // 获取下标位置和TextNode
-  setCursorIndex();
-  setTextNode();
+  if (!userList.length || !textNode.value) return;
 
   // 获取@内容
   const content = textNode.value!.textContent ?? "";
