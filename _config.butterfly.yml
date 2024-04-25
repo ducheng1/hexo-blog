@@ -448,7 +448,7 @@ valine:
   appId: UqugI3nP84t2vyfaKRHERV0i-gzGzoHsz # leancloud application app id
   appKey: UpWvTOB8TaTyAK4iuM6LUwys # leancloud application app key
   avatar: monsterid # gravatar style https://valine.js.org/#/avatar
-  serverURLs: # This configuration is suitable for domestic custom domain name users, overseas version will be automatically detected (no need to manually fill in)
+  serverURLs: https://uqugi3np.lc-cn-n1-shared.com # This configuration is suitable for domestic custom domain name users, overseas version will be automatically detected (no need to manually fill in)
   bg: # valine background
   visitor: false
   option:
